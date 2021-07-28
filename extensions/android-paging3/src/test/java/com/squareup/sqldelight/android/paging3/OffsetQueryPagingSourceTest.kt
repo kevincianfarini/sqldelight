@@ -15,7 +15,9 @@
  */
 package com.squareup.sqldelight.android.paging3
 
+import androidx.paging.PagingSource
 import androidx.paging.PagingSource.LoadParams.Refresh
+import androidx.paging.PagingSource.LoadParams.Append
 import androidx.paging.PagingSource.LoadResult
 import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.Transacter
@@ -223,7 +225,7 @@ class OffsetQueryPagingSourceTest {
       val expected = listOf(listOf(1L, 2L), listOf(0L)).iterator()
       var prevKey: Long? = 1L
       do {
-        val results = source.load(Refresh(prevKey, 2, false))
+        val results = source.load(PagingSource.LoadParams.Prepend(prevKey!!, 2, false))
         assertEquals(expected.next(), (results as LoadResult.Page).data)
         prevKey = results.prevKey
       } while (prevKey != null)
@@ -240,7 +242,7 @@ class OffsetQueryPagingSourceTest {
 
     runBlocking {
       assertFailsWith<IndexOutOfBoundsException> {
-        source.load(PagingSource.LoadParams.Append(10, 2, false))
+        source.load(Append(10, 2, false))
       }
     }
   }
