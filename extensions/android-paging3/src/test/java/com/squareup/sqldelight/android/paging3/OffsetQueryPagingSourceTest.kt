@@ -125,7 +125,7 @@ class OffsetQueryPagingSourceTest {
 
     val results = runBlocking { source.load(Refresh(9, 2, false)) }
 
-    assertEquals(7L, (results as LoadResult.Page).prevKey)
+    assertEquals(6L, (results as LoadResult.Page).prevKey)
     assertNull(results.nextKey)
   }
 
@@ -193,7 +193,7 @@ class OffsetQueryPagingSourceTest {
       TestCoroutineDispatcher()
     )
 
-    val results = runBlocking { source.load(Refresh(9, 2, false)) }
+    val results = runBlocking { source.load(Append(9, 2, false)) }
 
     assertEquals(9, (results as LoadResult.Page).itemsBefore)
     assertEquals(0, results.itemsAfter)
@@ -247,7 +247,7 @@ class OffsetQueryPagingSourceTest {
     }
   }
 
-  @Test fun `refresh key too big gets truncated`() {
+  @Test fun `refresh key too big gets coerced to have full refresh page`() {
     val source = OffsetQueryPagingSource(
       this::query,
       countQuery(),
@@ -257,7 +257,7 @@ class OffsetQueryPagingSourceTest {
 
     runBlocking {
       val results = source.load(Refresh(10, 2, false))
-      assertEquals(listOf(9L), (results as LoadResult.Page).data)
+      assertEquals(listOf(8L, 9L), (results as LoadResult.Page).data)
     }
   }
 
