@@ -16,8 +16,8 @@
 package com.squareup.sqldelight.android.paging3
 
 import androidx.paging.PagingSource
-import androidx.paging.PagingSource.LoadParams.Refresh
 import androidx.paging.PagingSource.LoadParams.Append
+import androidx.paging.PagingSource.LoadParams.Refresh
 import androidx.paging.PagingSource.LoadResult
 import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.Transacter
